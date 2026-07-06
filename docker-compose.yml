@@ -1,0 +1,15 @@
+services:
+  notes-agent:
+    build: .
+    stdin_open: true   
+    tty: true
+    env_file:
+      - .env            
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-mock}
+      - NOTES_DB_PATH=/data/notes.db
+    volumes:
+      - notes_data:/data
+
+volumes:
+  notes_data:
