@@ -7,16 +7,16 @@ property/repairs theme, but it works for any kind of note.
 **See `DEMO.md` for real conversations, unedited, including two bonus
 features actually working.**
 
+
+
+
+
 ## How to run it
 
 **Recommended: with a real AI model (Hugging Face, free, no card needed —
-this is the provider actually used to build and test this project).**
-
+this is the provider actually used to build and test this project).
 ```bash
 cd notes_agent
-```
-If you don't already have a `.env` file, create one from the template:
-```bash
 copy .env.example .env
 ```
 Open `.env` and add your Hugging Face token (`HF_TOKEN=...`) — get one free
@@ -24,6 +24,10 @@ at huggingface.co under Settings -> Access Tokens. Then:
 ```bash
 python -m notes_agent.cli
 ```
+
+
+
+
 
 **Without any setup:** it also runs with no API key at all, using a
 built-in offline mode instead of a real AI model — useful for a quick

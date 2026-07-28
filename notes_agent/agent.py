@@ -1,8 +1,12 @@
 
 
 # The conversation loop.
-# agent.py handles confirmation for update_note and delete_note.
-# It waits for the user's confirmation before calling executor.execute().
+
+
+
+
+
+# agent.py handles confirmation for update_note and delete_note. It waits for the user's confirmation before calling executor.execute().
 
 from __future__ import annotations
 import re
@@ -49,6 +53,9 @@ Session context: {context}
 # wires up storage,provider,and the tool executor for one user session
 
 class Agent:
+
+    #for each new conversation
+
     def __init__(self, store: NotesStore, user_id: str = "default_user",
                  provider: Optional[LLMProvider] = None):
         self.store = store
@@ -61,7 +68,8 @@ class Agent:
 
 
 
-    # builds the system prompt fresh each turn,injecting recently touched notes
+    # builds the system prompt fresh each turn,injecting recently touched notes 
+    #b2olo akher haga etkalemt 3anha
 
     def _system_prompt(self) -> str:
         ids = self.executor.recent_note_ids
@@ -90,6 +98,8 @@ class Agent:
 
 
     # looks up the note and drafts the yes or no question before anything gets touched
+
+    #enta mota'aked 
 
     def _build_preview(self, name: str, args: dict) -> Optional[dict]:
         """Returns {'question': str, 'summary': dict} for a destructive call,
@@ -128,9 +138,13 @@ class Agent:
 
 
 
+
+#  run one conversation 
+
     # main turn loop: checks for a pending yes/no first, otherwise lets the
     # model call tools until it gives a final answer or hits max_tool_hops
 
+# bta3 elta'keed eny 3ayez amsah aw a update
 
     def send(self, user_text: str) -> str:
         #Resolve a pending confirmation entirely in code, before the
@@ -159,6 +173,10 @@ class Agent:
             self.history.append({"role": "user", "content": user_text})
             self.history.append({"role": "assistant", "content": reply})
             return reply
+
+
+# eny a3mel hagat kter f el conv wra ba3d
+
 
         self.history.append({"role": "user", "content": user_text})
 

@@ -1,8 +1,16 @@
 
 #Tool schemas (sent to the LLM) and the executor that runs them.
-#No delete/update-by-keyword tool on purpose — note_id has to come from
-#search_notes/get_note first, so the model can't guess which note to touch.
+
+
+
+
+
+#No delete/update-by-keyword tool on purpose — note_id has to come from search_notes/get_note first, so the model can't guess which note to touch.
+
 #Confirmation gating for update_note/delete_note lives in agent.py, not here.
+
+
+
 
 
 import re

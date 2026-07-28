@@ -16,19 +16,25 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 
+
+
+# bwahadhom ll agent
+
 @dataclass
-class ToolCall:
+class ToolCall:            #info el tool
     id: str
     name: str
     input: Dict[str, Any]
 
 
 @dataclass
-class TurnResult:
+class TurnResult:      # rad el llm
     text: Optional[str]
     tool_calls: List[ToolCall] = field(default_factory=list)
     raw_assistant_message: Any = None
 
+
+#btaked enohom mawgoden
 
 class LLMProvider:
     def send(self, messages: List[dict], tools: List[dict], system: str) -> TurnResult:
@@ -39,6 +45,8 @@ class LLMProvider:
 
 
 
+
+
 # Convert tool schemas to the OpenAI tool format.
 
 def _to_openai_tools(tools):
@@ -46,6 +54,9 @@ def _to_openai_tools(tools):
         "name": t["name"], "description": t["description"], "parameters": t["input_schema"],
     }} for t in tools]
 
+
+
+#####################
 
 
 
@@ -66,6 +77,8 @@ def _clean_harmony_leakage(text: Optional[str]) -> Optional[str]:
     cleaned = _HARMONY_TOKEN_RE.sub("", text)
     cleaned = _HARMONY_CHANNEL_LEAK_RE.sub("", cleaned)
     return cleaned.strip() or text
+
+
 
 # Parse the OpenAI response and extract text and tool calls.
 def _parse_openai_response(data) -> TurnResult:
@@ -100,7 +113,7 @@ def _openai_tool_results_message(results):
 
 
 
-
+###############
 
 
 
@@ -111,6 +124,10 @@ def _openai_tool_results_message(results):
 
 # Azure OpenAI provider implementation.
 # Uses Azure deployment, endpoint, and API key.
+
+
+
+#bgeb hagat azure 
 
 class AzureOpenAIProvider(LLMProvider):
     def __init__(self, endpoint: Optional[str] = None, api_key: Optional[str] = None,
@@ -124,6 +141,9 @@ class AzureOpenAIProvider(LLMProvider):
                 "Azure OpenAI needs AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY, "
                 "and AZURE_OPENAI_DEPLOYMENT to be set."
             )
+
+
+#bb3at el message el conv
 
     def send(self, messages, tools, system) -> TurnResult:
         oa_messages = [{"role": "system", "content": system}] + messages
@@ -141,6 +161,11 @@ class AzureOpenAIProvider(LLMProvider):
         except urllib.error.HTTPError as e:
             raise RuntimeError(f"Azure OpenAI API error {e.code}: {e.read().decode('utf-8')}")
         return _parse_openai_response(data)
+
+
+
+
+#bakhod nateg el tool f shape message 
 
     def build_tool_results_message(self, results):
         return _openai_tool_results_message(results)

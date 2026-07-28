@@ -9,6 +9,7 @@ import datetime
 from dataclasses import dataclass
 from typing import Optional, List
 
+#note object
 
 @dataclass
 class Note:
@@ -31,6 +32,9 @@ class Note:
         b = self.body.replace("\n", " ")
         return b if len(b) <= n else b[:n].rstrip() + "..."
 
+
+
+#manage all note db ops
 
 class NotesStore:
     def __init__(self, db_path: str = "notes.db"):
@@ -111,7 +115,21 @@ class NotesStore:
             deleted_at=row["deleted_at"],
         )
 
+
+
+
+
+
+
+
+
+
     # CRUD
+
+
+
+
+
 
     # insert a new note and return the freshly created row
 
@@ -128,6 +146,10 @@ class NotesStore:
         self.conn.commit()
         return self.get_note(cur.lastrowid, user_id)
 
+
+
+
+
     # fetch one note by id, excluding soft-deleted ones unless asked
 
     def get_note(self, note_id: int, user_id: str = "default_user",
@@ -139,6 +161,9 @@ class NotesStore:
         row = cur.fetchone()
         return self._row_to_note(row) if row else None
 
+
+
+
     # store the note's current state before it gets overwritten
 
     def _snapshot_history(self, note: Note):
@@ -147,6 +172,9 @@ class NotesStore:
             (note.id, note.title, note.body, json.dumps(note.tags), self._now()),
         )
   
+
+
+
     # apply only the fields that were actually passed, keep the rest unchanged
 
     def update_note(self, note_id: int, title: Optional[str] = None,
@@ -165,6 +193,10 @@ class NotesStore:
         )
         self.conn.commit()
         return self.get_note(note_id, user_id)
+    
+
+
+
 
     # grab and remove the last saved snapshot for a note, used by undo
 
@@ -182,6 +214,11 @@ class NotesStore:
         self.conn.commit()
         return {"title": row["title"], "body": row["body"], "tags": json.loads(row["tags"])}
 
+
+
+
+
+
     # soft delete — just flips deleted_at instead of dropping the row
 
     def delete_note(self, note_id: int, user_id: str = "default_user") -> bool:
@@ -196,6 +233,10 @@ class NotesStore:
         self.conn.commit()
         return True
   
+
+
+
+
     # actually removes the row, only used to undo an add  
 
     def hard_delete_note(self, note_id: int, user_id: str = "default_user") -> bool:
@@ -207,6 +248,9 @@ class NotesStore:
         self.conn.commit()
         return True
    
+
+
+
     # clears deleted_at, brings a soft-deleted note back
 
 
@@ -216,6 +260,7 @@ class NotesStore:
         )
         self.conn.commit()
         return self.get_note(note_id, user_id)
+
 
 
 
@@ -246,6 +291,10 @@ class NotesStore:
         params.append(limit)
         cur = self.conn.execute(q, params)
         return [self._row_to_note(r) for r in cur.fetchall()]
+
+
+
+
 
     # keyword search via FTS5, falls back to list_notes if no query given
 
@@ -279,6 +328,9 @@ class NotesStore:
         if date_to:
             notes = [n for n in notes if n.updated_at <= date_to]
         return notes[:limit]
+
+
+
 
     # everything for a user, no limit — used by list_recurring_issues
 

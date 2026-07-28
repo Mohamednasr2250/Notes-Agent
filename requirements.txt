@@ -1,4 +1,11 @@
+# Core app (notes_agent/, tests/) uses ONLY the Python standard library
+# (sqlite3, urllib, json, re) — nothing to install for LLM_PROVIDER=mock,
+# azure_openai, or huggingface.
+#
+# The one real dependency below is for web_app.py only.
+flask>=3.0.0
 
-# mcp>=1.0.0                    # bonus
-# sentence-transformers>=2.2.0  # bonus
-# numpy>=1.24.0                 # bonus
+# Uncomment these only if you want to run the bonus extras in bonus/:
+# mcp>=1.0.0                    # bonus/mcp_server.py
+# sentence-transformers>=2.2.0  # bonus/semantic_search.py
+# numpy>=1.24.0                 # bonus/semantic_search.py
